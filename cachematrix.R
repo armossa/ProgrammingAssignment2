@@ -1,78 +1,52 @@
-## Put comments here that give an overall description of what your
-## functions do
+## ## A couple of functions for  matrices inversion with caching 
 
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-
-}
-
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
-
-
-
-## A pair of functions that inverse matrices with caching 
-
-makeCacheMatrix <- function(m = matrix()) {
-  # Initialize the inverse property
-  i <- NULL
+  # Initializing the inverse 
+  inv <- NULL
   
-  
-  # Set the matrix
-  set <- function(mat) {
-    m <<- mat
-    i <<- NULL
+  # Setting the matrix
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
   }
   
-  # get the matrix
+  # Getting the matrix
+  get <- function() x  # Return the matrix
   
-  get <- function() {
-    # return the matrix
-    m
-  }
-  # the inverse matrix
+  # Setting the inverse of the matrix
+  setinverse <- function(inverse) inv <<- inverse
   
-  setinverse <- function(inverse){
-    i <<- inverse
-  }
+  # Getting  the inverse of the matrix
   
-  # get the inverse matrix
+  getinverse <- function() inv # Return the inverse
   
-  getinverse <- function(){
-    i
-  }
-  # return list of methods
+  #list of the methods
   list(set = set,
-       get = get, 
-       setinverse = setinverse, 
+       get = get,
+       setinverse = setinverse,
        getinverse = getinverse)
 }
 
 
-# Part two
+#  Computing the inverse of the  matrix returned by "makeCacheMatrix"
+# "cachesolve" should retrieve the inverse from the cache if the inverse has already been calculated.
 
 cacheSolve <- function(x, ...) {
-  # return the inverse of x
-  m <- x$getinverse()
+  # The inverse of 'x'
+  inv <- x$getinverse()
   
-  if(!is.null(m)) {
-    
+  # The  inverse if its already set
+  if(!is.null(inv)) {
     message("getting cached data.")
-    
-    return(m)
+    return(inv)
   }
-  
+  ## Get the matrix from our objec
   data <- x$get()
-  # the inverse via matrix multiplication 
-  m <- solve(data) %*% data
   
-  x$setinverse(m)
+  inv <- solve(data)
   
-  # return the matrix
-  m
+  x$setinverse(inv)
+  
+  inv
 }
